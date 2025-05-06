@@ -1,0 +1,135 @@
+// agregarle funcionabilidad a "Ordenar por"
+
+// agregar funciones a "Buscar"
+
+
+
+
+let carrito = [];
+const contenedorProductos = document.getElementById("productos-container");
+const contenedorCarrito = document.getElementById("carrito-container");
+const totalCarrito = document.getElementById("total");
+const btnFinalizar = document.getElementById("btn-finalizar");
+
+productos.forEach((producto, index) => {
+    const productoDiv = document.createElement("div");
+    productoDiv.classList.add("producto");
+
+    productoDiv.innerHTML = `
+        <h2>${producto.nombre}</h2>
+        <p>Precio: $${producto.precio}</p>
+        <p class="stock">Stock: <span id="stock-${index}">${producto.stock}</span> disponibles</p>
+        <button class="btn-comprar" data-index="${index}">Comprar</button>
+    `;
+
+    contenedorProductos.appendChild(productoDiv);
+});
+
+document.querySelectorAll(".btn-comprar").forEach(boton => {
+    boton.addEventListener("click", (event) => {
+        const index = event.target.getAttribute("data-index");
+        agregarAlCarrito(index);
+    });
+});
+
+// Crear botón para vaciar carrito
+const btnVaciar = document.createElement("button");
+btnVaciar.id = "btn-vaciar";
+btnVaciar.textContent = "Vaciar Carrito";
+btnVaciar.style.display = "none";
+btnFinalizar.parentNode.insertBefore(btnVaciar, btnFinalizar);
+
+function agregarAlCarrito(index) {
+    index = parseInt(index);
+    if (productos[index].stock > 0) {
+        productos[index].stock--;
+        document.getElementById(`stock-${index}`).textContent = productos[index].stock;
+
+        let productoEnCarrito = carrito.find(item => item.nombre === productos[index].nombre);
+        if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            carrito.push({ ...productos[index], cantidad: 1 });
+        }
+        actualizarCarrito();
+    } else {
+        alert("No hay más stock disponible");
+    }
+}
+
+function quitarDelCarrito(index) {
+    index = parseInt(index);
+    let item = carrito[index];
+    if (item.cantidad > 1) {
+        item.cantidad--;
+    } else {
+        carrito.splice(index, 1);
+    }
+    let productoOriginal = productos.find(p => p.nombre === item.nombre);
+    productoOriginal.stock++;
+    document.getElementById(`stock-${productos.indexOf(productoOriginal)}`).textContent = productoOriginal.stock;
+    actualizarCarrito();
+}
+
+function actualizarCarrito() {
+    contenedorCarrito.innerHTML = "";
+    let total = 0;
+
+    carrito.forEach((item, i) => {
+        const carritoItem = document.createElement("div");
+        carritoItem.classList.add("carrito-item");
+
+        carritoItem.innerHTML = `
+            <h3>${item.nombre}</h3> 
+            <p> $${item.precio} x ${item.cantidad}</p>
+            <button class="btn-quitar" data-index="${i}">-1</button>
+            <button class="btn-aumentar" data-index="${i}">+1</button>
+        `;
+        contenedorCarrito.appendChild(carritoItem);
+        total += item.precio * item.cantidad;
+    });
+
+    totalCarrito.textContent = total;
+    btnFinalizar.style.display = carrito.length > 0 ? "block" : "none";
+    btnVaciar.style.display = carrito.length > 0 ? "block" : "none";
+
+    document.querySelectorAll(".btn-quitar").forEach(boton => {
+        boton.addEventListener("click", (event) => quitarDelCarrito(event.target.getAttribute("data-index")));
+    });
+    
+    document.querySelectorAll(".btn-aumentar").forEach(boton => {
+        boton.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            let item = carrito[index];
+            let productoOriginal = productos.find(p => p.nombre === item.nombre);
+            if (productoOriginal.stock > 0) {
+                item.cantidad++;
+                productoOriginal.stock--;
+                document.getElementById(`stock-${productos.indexOf(productoOriginal)}`).textContent = productoOriginal.stock;
+                actualizarCarrito();
+            }
+        });
+    });
+}
+
+btnFinalizar.addEventListener("click", () => {
+    if (carrito.length > 0) {
+        Swal.fire({
+            title: "¡Compra realizada!",
+            text: "Tu pedido ha sido procesado con éxito.",
+            icon: "success",
+            confirmButtonText: "OK"
+        });
+        carrito = [];
+        actualizarCarrito();
+    }
+});
+
+btnVaciar.addEventListener("click", () => {
+    carrito.forEach(item => {
+        let productoOriginal = productos.find(p => p.nombre === item.nombre);
+        productoOriginal.stock += item.cantidad;
+    });
+    carrito = [];
+    actualizarCarrito();
+});

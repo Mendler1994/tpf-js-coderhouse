@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>¡Hola!</h1>
+            <h2>Bienvenido a mi tienda</h2>
+        </header>
+        
+        <main>
+            <section id="tools">
+                <div id="ordenar">
+                    <h2>Ordenar por:</h2>
+                    <select id="orden-opciones">
+                        <option value="alfabetico">Alfabéticamente</option>
+                        <option value="menor-precio">Menor precio</option>
+                        <option value="mayor-precio">Mayor precio</option>
+                    </select>
+                </div>
+
+                <div id="buscar">
+                    <h2>🔍</h2>
+                    <input type="text" placeholder="Buscar...">
+                    <button id="btn-buscar">Buscar</button>
+                </div>
+            </section>
+
+            <section id="store">
+                <div id="productos">
+                    <h2>Productos Disponibles</h2>
+                    <div id="productos-container"></div>
+                </div>
+
+            <!-- Carrito de compras -->
+                <div id="carrito">
+                    <h2>🛒 Carrito de compras</h2>
+                    <div id="carrito-container"></div>
+                    <p>Total: $<span id="total">0</span></p>
+                    <button id="btn-finalizar">Comprar</button>
+                </div>
+            </section>
+
+        </main>
+
+        <script src="stock.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
