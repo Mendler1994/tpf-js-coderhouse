@@ -1,10 +1,3 @@
-// agregarle funcionabilidad a "Ordenar por"
-
-// agregar funciones a "Buscar"
-
-
-
-
 let carrito = [];
 const contenedorProductos = document.getElementById("productos-container");
 const contenedorCarrito = document.getElementById("carrito-container");
@@ -15,11 +8,15 @@ productos.forEach((producto, index) => {
     const productoDiv = document.createElement("div");
     productoDiv.classList.add("producto");
 
+    const isOutOfStock = producto.stock === 0;
+
     productoDiv.innerHTML = `
         <h2>${producto.nombre}</h2>
         <p>Precio: $${producto.precio}</p>
         <p class="stock">Stock: <span id="stock-${index}">${producto.stock}</span> disponibles</p>
-        <button class="btn-comprar" data-index="${index}">Comprar</button>
+        <button class="btn-comprar" data-index="${index}" ${isOutOfStock ? "disabled" : ""}>
+        ${isOutOfStock ? "Sin stock" : "Comprar"}
+        </button>
     `;
 
     contenedorProductos.appendChild(productoDiv);
@@ -52,6 +49,13 @@ function agregarAlCarrito(index) {
             carrito.push({ ...productos[index], cantidad: 1 });
         }
         actualizarCarrito();
+
+    if (productos[index].stock === 0) {
+        const boton = document.querySelector(`.btn-comprar[data-index="${index}"]`);
+        boton.disabled = true;
+        boton.textContent = "Sin stock";
+    }
+
     } else {
         alert("No hay más stock disponible");
     }
@@ -69,6 +73,12 @@ function quitarDelCarrito(index) {
     productoOriginal.stock++;
     document.getElementById(`stock-${productos.indexOf(productoOriginal)}`).textContent = productoOriginal.stock;
     actualizarCarrito();
+
+    if (productoOriginal.stock === 1) { // es decir, vuelve de 0 a 1
+        const boton = document.querySelector(`.btn-comprar[data-index="${productos.indexOf(productoOriginal)}"]`);
+        boton.disabled = false;
+        boton.textContent = "Comprar";
+    }    
 }
 
 function actualizarCarrito() {
@@ -133,3 +143,73 @@ btnVaciar.addEventListener("click", () => {
     carrito = [];
     actualizarCarrito();
 });
+
+// agregar funciones a "Buscar"
+
+const inputBusqueda = document.getElementById("input-busqueda");
+const btnBuscar = document.getElementById("btn-buscar");
+const selectOrden = document.getElementById("orden-opciones");
+
+btnBuscar.addEventListener("click", () => {
+    aplicarFiltrosYOrden();
+});
+
+selectOrden.addEventListener("change", () => {
+    aplicarFiltrosYOrden();
+});
+
+function mostrarProductos(productosFiltrados) {
+    contenedorProductos.innerHTML = "";
+
+    productosFiltrados.forEach((producto, index) => {
+        const productoDiv = document.createElement("div");
+        productoDiv.classList.add("producto");
+
+        const isOutOfStock = producto.stock === 0;
+
+        productoDiv.innerHTML = `
+            <h2>${producto.nombre}</h2>
+            <p>Precio: $${producto.precio}</p>
+            <p class="stock">Stock: <span id="stock-${index}">${producto.stock}</span> disponibles</p>
+            <button class="btn-comprar" data-index="${index}" ${isOutOfStock ? "disabled" : ""}>
+                ${isOutOfStock ? "Sin stock" : "Comprar"}
+            </button>
+        `;
+
+        contenedorProductos.appendChild(productoDiv);
+    });
+
+    document.querySelectorAll(".btn-comprar").forEach(boton => {
+        boton.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            agregarAlCarrito(index);
+        });
+    });
+}
+
+// agregarle funcionabilidad a "Ordenar por"
+
+function aplicarFiltrosYOrden() {
+    const texto = inputBusqueda.value.toLowerCase();
+    const orden = selectOrden.value;
+
+    let productosFiltrados = productos.filter(p =>
+        p.nombre.toLowerCase().includes(texto)
+    );
+
+    switch (orden) {
+        case "alfabetico":
+            productosFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            break;
+        case "menor-precio":
+            productosFiltrados.sort((a, b) => a.precio - b.precio);
+            break;
+        case "mayor-precio":
+            productosFiltrados.sort((a, b) => b.precio - a.precio);
+            break;
+    }
+
+    mostrarProductos(productosFiltrados);
+}
+
+mostrarProductos(productos);
