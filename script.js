@@ -1,10 +1,10 @@
-let carrito = [];
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 const contenedorProductos = document.getElementById("productos-container");
 const contenedorCarrito = document.getElementById("carrito-container");
 const totalCarrito = document.getElementById("total");
 const btnFinalizar = document.getElementById("btn-finalizar");
 
-productos.forEach((producto, index) => {
+productos.forEach((producto, id) => {
     const productoDiv = document.createElement("div");
     productoDiv.classList.add("producto"); 
 
@@ -13,8 +13,8 @@ productos.forEach((producto, index) => {
     productoDiv.innerHTML = `
         <h2>${producto.nombre}</h2>
         <p>Precio: $${producto.precio}</p>
-        <p class="stock">Stock: <span id="stock-${index}">${producto.stock}</span> disponibles</p>
-        <button class="btn-comprar" data-index="${index}" ${isOutOfStock ? "disabled" : ""}>
+        <p class="stock">Stock: <span id="stock-${producto.id}">${producto.stock}</span> disponibles</p>
+        <button class="btn-comprar" data-id="${producto.id}" ${isOutOfStock ? "disabled" : ""}>
         ${isOutOfStock ? "Sin stock" : "Comprar"}
         </button>
     `;
@@ -24,54 +24,62 @@ productos.forEach((producto, index) => {
 
 document.querySelectorAll(".btn-comprar").forEach(boton => {
     boton.addEventListener("click", (event) => {
-        const index = event.target.getAttribute("data-index");
-        agregarAlCarrito(index);
+        const id = event.target.getAttribute("data-id");
+        agregarAlCarrito(id);
     });
 });
 
-// Crear botón para vaciar carrito
+// Botón para vaciar carrito
 const btnVaciar = document.createElement("button");
 btnVaciar.id = "btn-vaciar";
 btnVaciar.textContent = "Vaciar Carrito";
 btnVaciar.style.display = "none";
 btnFinalizar.parentNode.insertBefore(btnVaciar, btnFinalizar);
 
-function agregarAlCarrito(index) {
-    index = parseInt(index);
-    if (productos[index].stock > 0) {
-        productos[index].stock--;
-        document.getElementById(`stock-${index}`).textContent = productos[index].stock;
-        let productoEnCarrito = carrito.find(item => item.nombre === productos[index].nombre);
-        //Ternario
-        productoEnCarrito?productoEnCarrito.cantidad++:carrito.push({ ...productos[index], cantidad: 1 });
+//Agregar al Carrito
+function agregarAlCarrito(id) {
+    id = parseInt(id);
+    const producto = productos.find(p => p.id === id);
+    if (producto && producto.stock > 0) {
+        producto.stock--;
+        document.getElementById(`stock-${id}`).textContent = producto.stock;
+
+        let productoEnCarrito = carrito.find(item => item.id === id);
+        productoEnCarrito
+            ? productoEnCarrito.cantidad++
+            : carrito.push({ ...producto, cantidad: 1 });
+
         actualizarCarrito();
 
-    if (productos[index].stock === 0) {
-        const boton = document.querySelector(`.btn-comprar[data-index="${index}"]`);
-        boton.disabled = true;
-        boton.textContent = "Sin stock";
-    }
-s
+        if (producto.stock === 0) {
+            const boton = document.querySelector(`.btn-comprar[data-id="${id}"]`);
+            boton.disabled = true;
+            boton.textContent = "Sin stock";
+        }
     } else {
         alert("No hay más stock disponible");
     }
 }
 
-function quitarDelCarrito(index) {
-    index = parseInt(index);
-    let item = carrito[index];
-    // Ternario 
-    item.cantidad > 1 ? item.cantidad--: carrito.splice(index, 1);
-    let productoOriginal = productos.find(p => p.nombre === item.nombre);
+//Quitar del Carrito
+function quitarDelCarrito(id) {
+    id = parseInt(id);
+    let item = carrito[id];
+    if (!item) return;
+
+    item.cantidad > 1 ? item.cantidad-- : carrito.splice(id, 1);
+
+    let productoOriginal = productos.find(p => p.id === item.id);
     productoOriginal.stock++;
-    document.getElementById(`stock-${productos.indexOf(productoOriginal)}`).textContent = productoOriginal.stock;
+
+    document.getElementById(`stock-${productoOriginal.id}`).textContent = productoOriginal.stock;
     actualizarCarrito();
 
-    if (productoOriginal.stock === 1) { // es decir, vuelve de 0 a 1
-        const boton = document.querySelector(`.btn-comprar[data-index="${productos.indexOf(productoOriginal)}"]`);
+    if (productoOriginal.stock === 1) {
+        const boton = document.querySelector(`.btn-comprar[data-id="${productoOriginal.id}"]`);
         boton.disabled = false;
         boton.textContent = "Comprar";
-    }    
+    }
 }
 
 function actualizarCarrito() {
@@ -85,8 +93,8 @@ function actualizarCarrito() {
         carritoItem.innerHTML = `
             <h3>${item.nombre}</h3> 
             <p> $${item.precio} x ${item.cantidad}</p>
-            <button class="btn-quitar" data-index="${i}">-1</button>
-            <button class="btn-aumentar" data-index="${i}">+1</button>
+            <button class="btn-quitar" data-id="${i}" aria-label="Quitar uno">-1</button>
+            <button class="btn-aumentar" data-id="${i}" aria-label="Agregar uno">+1</button>
         `;
         contenedorCarrito.appendChild(carritoItem);
         total += item.precio * item.cantidad;
@@ -97,22 +105,24 @@ function actualizarCarrito() {
     btnVaciar.style.display = carrito.length > 0 ? "block" : "none";
 
     document.querySelectorAll(".btn-quitar").forEach(boton => {
-        boton.addEventListener("click", (event) => quitarDelCarrito(event.target.getAttribute("data-index")));
+        boton.addEventListener("click", (event) => quitarDelCarrito(event.target.getAttribute("data-id")));
     });
     
     document.querySelectorAll(".btn-aumentar").forEach(boton => {
         boton.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            let item = carrito[index];
-            let productoOriginal = productos.find(p => p.nombre === item.nombre);
+            const id = event.target.getAttribute("data-id");
+            let item = carrito[id];
+            let productoOriginal = productos.find(p => p.id === item.id);
+
             if (productoOriginal.stock > 0) {
                 item.cantidad++;
                 productoOriginal.stock--;
-                document.getElementById(`stock-${productos.indexOf(productoOriginal)}`).textContent = productoOriginal.stock;
+                document.getElementById(`stock-${productoOriginal.id}`).textContent = productoOriginal.stock;
                 actualizarCarrito();
             }
         });
     });
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
 btnFinalizar.addEventListener("click", () => {
@@ -123,6 +133,7 @@ btnFinalizar.addEventListener("click", () => {
             icon: "success",
             confirmButtonText: "OK"
         });
+        localStorage.removeItem("carrito");
         carrito = [];
         actualizarCarrito();
     }
@@ -133,6 +144,7 @@ btnVaciar.addEventListener("click", () => {
         let productoOriginal = productos.find(p => p.nombre === item.nombre);
         productoOriginal.stock += item.cantidad;
     });
+    localStorage.removeItem("carrito");
     carrito = [];
     actualizarCarrito();
 });
@@ -151,10 +163,11 @@ selectOrden.addEventListener("change", () => {
     aplicarFiltrosYOrden();
 });
 
+//Mostrar Productos
 function mostrarProductos(productosFiltrados) {
     contenedorProductos.innerHTML = "";
 
-    productosFiltrados.forEach((producto, index) => {
+    productosFiltrados.forEach((producto) => {
         const productoDiv = document.createElement("div");
         productoDiv.classList.add("producto");
 
@@ -163,8 +176,8 @@ function mostrarProductos(productosFiltrados) {
         productoDiv.innerHTML = `
             <h2>${producto.nombre}</h2>
             <p>Precio: $${producto.precio}</p>
-            <p class="stock">Stock: <span id="stock-${index}">${producto.stock}</span> disponibles</p>
-            <button class="btn-comprar" data-index="${index}" ${isOutOfStock ? "disabled" : ""}>
+            <p class="stock">Stock: <span id="stock-${producto.id}">${producto.stock}</span> disponibles</p>
+            <button class="btn-comprar" data-id="${producto.id}" ${isOutOfStock ? "disabled" : ""}>
                 ${isOutOfStock ? "Sin stock" : "Comprar"}
             </button>
         `;
@@ -174,11 +187,15 @@ function mostrarProductos(productosFiltrados) {
 
     document.querySelectorAll(".btn-comprar").forEach(boton => {
         boton.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            agregarAlCarrito(index);
+            const id = parseInt(event.target.getAttribute("data-id"));
+            const index = productos.findIndex(p => p.id === id);
+            if (index !== -1) {
+            agregarAlCarrito(id);
+            }
         });
     });
 }
+
 
 // agregarle funcionabilidad a "Ordenar por"
 
@@ -206,7 +223,3 @@ function aplicarFiltrosYOrden() {
 }
 
 mostrarProductos(productos);
-
-
-
-
