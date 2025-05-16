@@ -223,3 +223,4 @@ function aplicarFiltrosYOrden() {
 }
 
 mostrarProductos(productos);
+actualizarCarrito();
