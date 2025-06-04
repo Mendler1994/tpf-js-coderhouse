@@ -288,11 +288,7 @@ function agregarAlCarritoAsync(id) {
     });
 }
 
-
 mostrarProductos(productos);
 actualizarCarrito();
-
-
-
 
 const productoDiv = document.createElement("div")
