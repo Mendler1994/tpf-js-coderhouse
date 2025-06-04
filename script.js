@@ -22,10 +22,39 @@ productos.forEach((producto, id) => {
     contenedorProductos.appendChild(productoDiv);
 });
 
+//Promesas
 document.querySelectorAll(".btn-comprar").forEach(boton => {
-    boton.addEventListener("click", (event) => {
+    boton.addEventListener("click", async (event) => {
         const id = event.target.getAttribute("data-id");
-        agregarAlCarrito(id);
+         try {
+            const producto = await agregarAlCarritoAsync(id);
+
+            // Actualizar stock en el DOM
+            document.getElementById(`stock-${id}`).textContent = producto.stock;
+
+            // Actualizar carrito
+            let productoEnCarrito = carrito.find(item => item.id === id);
+            if (productoEnCarrito) {
+                productoEnCarrito.cantidad++;
+            } else {
+                carrito.push({ ...producto, cantidad: 1 });
+            }
+
+            actualizarCarrito();
+
+        if (producto.stock === 0) {
+            const boton = document.querySelector(`.btn-comprar[data-id="${id}"]`);
+            boton.disabled = true;
+            boton.textContent = "Sin stock";
+        }
+        
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error,
+            });
+        }
     });
 });
 
@@ -140,14 +169,33 @@ btnFinalizar.addEventListener("click", () => {
 });
 
 btnVaciar.addEventListener("click", () => {
-    carrito.forEach(item => {
-        let productoOriginal = productos.find(p => p.nombre === item.nombre);
-        productoOriginal.stock += item.cantidad;
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se eliminarán todos los productos del carrito.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Vaciar carrito",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            carrito.forEach(item => {
+                let productoOriginal = productos.find(p => p.nombre === item.nombre);
+                productoOriginal.stock += item.cantidad;
+            });
+            localStorage.removeItem("carrito");
+            carrito = [];
+            actualizarCarrito();
+
+            Swal.fire({
+                icon: "success",
+                title: "Carrito vaciado",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
     });
-    localStorage.removeItem("carrito");
-    carrito = [];
-    actualizarCarrito();
 });
+
 
 // agregar funciones a "Buscar"
 
@@ -196,7 +244,6 @@ function mostrarProductos(productosFiltrados) {
     });
 }
 
-
 // agregarle funcionabilidad a "Ordenar por"
 
 function aplicarFiltrosYOrden() {
@@ -222,5 +269,30 @@ function aplicarFiltrosYOrden() {
     mostrarProductos(productosFiltrados);
 }
 
+//Promesas
+function agregarAlCarritoAsync(id) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const producto = productos.find(p => p.id === id);
+            if (!producto) {
+                reject("Producto no encontrado");
+                return;
+            }
+            if (producto.stock <= 0) {
+                reject("No hay stock disponible");
+                return;
+            }
+            producto.stock--;
+            resolve(producto);
+        }, 1000); //(1 seg de demora)
+    });
+}
+
+
 mostrarProductos(productos);
 actualizarCarrito();
+
+
+
+
+const productoDiv = document.createElement("div")

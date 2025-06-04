@@ -1,39 +1,78 @@
 :root {
     --color-principal: #354f52;
-    --color-secundario: linear-gradient(to right, #6b9080 20%, #a4c3b2 60%, #cce3de 100%);
+    --color-secundario: #6b9080;
     --color-fondo: whitesmoke;
+    /*Otros posibles colores
+     #a4c3b2
+     #cce3de
+    */
   }
 
 header {
-    background-image: var(--color-secundario);
-    padding: 20px 100px;
-    margin: 0;
-    text-align: left;
-    color: whitesmoke;
-    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
-    font-size: x-large;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-secundario);
+    color: white;
+    padding: 1rem;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-family: 'Montserrat', sans-serif;
 }
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.header-controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    min-width: 322px;
+    overflow-x: auto;
+  }
+
 /*
 main {
     padding: 50px;
 }
 */
 
+/*
 #tools {
     padding: 15px;
     margin-top: 10px;
     display: flex;
     text-align: center;
     gap: 8px;
-
     font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
     background-color: var(--color-fondo);
 }
+*/
 
 #ordenar {
     border: 1px solid #ddd;
     padding: 15px;
-    height: 2em;
+    height: 4em;
     display: flex;
     align-items:center;
     gap: 8px;
@@ -50,7 +89,7 @@ main {
 #buscar {
     border: 1px solid #ddd;
     padding: 15px;
-    height: 2em;
+    height: 4em;
     display: flex;
     align-items:center;
     gap: 8px;
@@ -124,6 +163,11 @@ main {
     cursor: pointer;
 }
 
+#btn-carrito{
+    border-radius: 5rem;
+    background-color: var(--color-secundario);
+}
+
 
 .btn-comprar {
     padding: 8px 10px;
@@ -151,25 +195,25 @@ main {
 }
 
 .btn-quitar:hover {
-    border-color: 200px, solid, #850000;
-    background-color: whitesmoke;
-    color: black;
+    border: 1px, solid, var(--color-principal);
+    background-color: #850000;
+    color: whitesmoke;
 }
 
 .btn-aumentar {
     padding: 8px 10px;
     background-color: #c2fcd5;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-    color: rgb(0, 122, 16);
+    color: rgb(1, 187, 25);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .btn-aumentar:hover {
-    border-color: 200px, solid, #008537;
-    background-color: whitesmoke;
-    color: black;
+    border: 1px, solid, var(--color-principal);
+    background-color: #008537;
+    color: whitesmoke;
 }
 
 #btn-finalizar {
@@ -177,7 +221,7 @@ main {
     float: right;
     padding: 8px 15px;
     margin-top: 50px;
-    background-color: #6b9080;
+    background-color: var(--color-secundario);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     color: whitesmoke;
     border: none;
@@ -189,7 +233,7 @@ main {
 #btn-finalizar:hover {
     background-color: #316e32;
     color: white;
-    border-color: 10px, solid, #204d22;
+    border: 2px, solid, var(--color-principal);
     transform: scale(1.1);
 }
 
@@ -198,7 +242,7 @@ main {
     float: left;
     padding: 8px 15px;
     margin-top: 50px;
-    background-color: #6b9080;
+    background-color: var(--color-secundario);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     color: whitesmoke;
     border: none;
@@ -210,6 +254,36 @@ main {
 #btn-vaciar:hover {
     background-color: #e90800;
     color: white;
-    border-color: 10px, solid, #204d22;
+    border: 2px, solid, var(--color-principal);
     transform: scale(1.1);
+}
+
+/*RESPONSIVE*/
+
+@media (max-width: 768px) {
+  #store {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #tools {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #ordenar, #buscar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .producto, .carrito-item {
+    width: 100%;
+    background-color: var(--color-fondo);
+  }
+
+  #carrito {
+    width: 90%;
+    background-color: var(--color-principal);
+    color: whitesmoke;
+  }
 }
