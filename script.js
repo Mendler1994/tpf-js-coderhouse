@@ -222,6 +222,7 @@ function mostrarProductos(productosFiltrados) {
         const isOutOfStock = producto.stock === 0;
 
         productoDiv.innerHTML = `
+            <img src="${producto.img}" alt="${producto.nombre}" class="producto-img">
             <h2>${producto.nombre}</h2>
             <p>Precio: $${producto.precio}</p>
             <p class="stock">Stock: <span id="stock-${producto.id}">${producto.stock}</span> disponibles</p>
@@ -290,5 +291,3 @@ function agregarAlCarritoAsync(id) {
 
 mostrarProductos(productos);
 actualizarCarrito();
-
-const productoDiv = document.createElement("div")

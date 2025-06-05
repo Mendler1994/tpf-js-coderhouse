@@ -1,17 +1,86 @@
 const productos = [
-    { id: 1, nombre: "Auriculares Bluetooth Sony WH-CH520", precio: 12000, stock: 5, img: "https://m.media-amazon.com/images/I/61G8c4FvSnL._AC_SX679_.jpg" },
-    { id: 2, nombre: "Smartphone Samsung Galaxy A34", precio: 80000, stock: 10, img: "https://m.media-amazon.com/images/I/71VRP7cLkaL._AC_SX679_.jpg" },
-    { id: 3, nombre: "Notebook Lenovo IdeaPad 3", precio: 50000, stock: 15, img: "https://m.media-amazon.com/images/I/71D57QAHgsL._AC_SX679_.jpg" },
-    { id: 4, nombre: "Mouse Logitech M280 Inalámbrico", precio: 25000, stock: 20, img: "https://m.media-amazon.com/images/I/61eL1Z9bGFL._AC_SX679_.jpg" },
-    { id: 5, nombre: "Teclado Mecánico Redragon Kumara", precio: 24000, stock: 5, img: "https://m.media-amazon.com/images/I/71YtGXLdGKL._AC_SX679_.jpg" },
-    { id: 6, nombre: "Monitor Samsung 24'' Curvo", precio: 160000, stock: 10, img: "https://m.media-amazon.com/images/I/81vDJ+eU4JL._AC_SX679_.jpg" },
-    { id: 7, nombre: "Parlantes Logitech Z313 2.1", precio: 100000, stock: 15, img: "https://m.media-amazon.com/images/I/61h3Gk3iWwL._AC_SX679_.jpg" },
-    { id: 8, nombre: "Tablet Xiaomi Redmi Pad SE", precio: 50000, stock: 20, img: "https://m.media-amazon.com/images/I/61X5Z2W+0xL._AC_SX679_.jpg" },
-    { id: 9, nombre: "Impresora HP Ink Tank 415", precio: 85000, stock: 12, img: "https://m.media-amazon.com/images/I/71YTl1CRZzL._AC_SX679_.jpg" },
-    { id: 10, nombre: "Disco Duro Externo Seagate 1TB", precio: 35000, stock: 8, img: "https://m.media-amazon.com/images/I/71pA7pC9k2L._AC_SX679_.jpg" },
-    { id: 11, nombre: "Cámara Web Logitech C920", precio: 42000, stock: 10, img: "https://m.media-amazon.com/images/I/61j5BsTPEML._AC_SX679_.jpg" },
-    { id: 12, nombre: "Silla Gamer Cougar Armor One", precio: 140000, stock: 6, img: "https://m.media-amazon.com/images/I/61boMGy6LgL._AC_SX679_.jpg" },
-    { id: 13, nombre: "Kindle Paperwhite 8GB", precio: 70000, stock: 9, img: "https://m.media-amazon.com/images/I/61itOHGZ9eL._AC_SX679_.jpg" },
-    { id: 14, nombre: "Auriculares In-Ear JBL Tune 110", precio: 9000, stock: 20, img: "https://m.media-amazon.com/images/I/61EFy8Kq7rL._AC_SX679_.jpg" },
-    { id: 15, nombre: "Router TP-Link Archer C6", precio: 30000, stock: 10, img: "https://m.media-amazon.com/images/I/61-KC6V2RkL._AC_SX679_.jpg" }
+  {
+    id: 1,
+    nombre: "Auriculares Inalámbricos JBL",
+    precio: 12000,
+    stock: 5,
+    img: "img/Auriculares Inalámbricos JBL.webp"
+  },
+  {
+    id: 2,
+    nombre: "Smartwatch Xiaomi Mi Band 7",
+    precio: 80000,
+    stock: 10,
+    img: "img/Smartwatch Xiaomi Mi Band 7.jpg"
+  },
+  {
+    id: 3,
+    nombre: "Notebook Lenovo 14''",
+    precio: 500000,
+    stock: 15,
+    img: "img/Notebook Lenovo 14''.webp"
+  },
+  {
+    id: 4,
+    nombre: "Teclado Mecánico Redragon",
+    precio: 25000,
+    stock: 20,
+    img: "img/Teclado Mecánico Redragon.webp"
+  },
+  {
+    id: 5,
+    nombre: "Mouse Gamer Logitech G203",
+    precio: 24000,
+    stock: 5,
+    img: "img/Mouse Gamer Logitech G203.webp"
+  },
+  {
+    id: 6,
+    nombre: "Smart TV 50'' Samsung 4K",
+    precio: 160000,
+    stock: 10,
+    img: "img/Smart TV 50'' Samsung 4K.jpg"
+  },
+  {
+    id: 7,
+    nombre: "Cafetera Nespresso",
+    precio: 100000,
+    stock: 15,
+    img: "img/Cafetera Nespresso.webp"
+  },
+  {
+    id: 8,
+    nombre: "Licuadora Philips",
+    precio: 50000,
+    stock: 20,
+    img: "img/Licuadora Philips.jpg"
+  },
+  {
+    id: 9,
+    nombre: "Tablet Samsung Galaxy Tab A7",
+    precio: 130000,
+    stock: 12,
+    img: "img/Tablet Samsung Galaxy Tab A7.webp"
+  },
+  {
+    id: 10,
+    nombre: "Heladera con Freezer Whirlpool",
+    precio: 700000,
+    stock: 8,
+    img: "img/Heladera con Freezer Whirlpool.jfif"
+  },
+  {
+    id: 11,
+    nombre: "Lavarropas Automático LG",
+    precio: 650000,
+    stock: 6,
+    img: "img/Lavarropas Automático LG.jpg"
+  },
+  {
+    id: 12,
+    nombre: "Parlante Bluetooth Sony",
+    precio: 45000,
+    stock: 10,
+    img: "img/Parlante Bluetooth Sony.webp"
+  }
 ];

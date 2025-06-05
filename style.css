@@ -104,10 +104,30 @@ body {
     margin: 10px;
     display: inline-block;
     width: 200px;
+    height: 400px;
     text-align: center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
     color: var(--color-principal);
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.producto:hover {
+  transform: scale(1.03);
+}
+
+.producto img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2.5px inset var(--color-principal);
+  margin-top: 0.1rem;
+}
+
+.producto h2 {
+    height: 80px;
 }
 
 #productos {
