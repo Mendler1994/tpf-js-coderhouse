@@ -4,23 +4,22 @@ const contenedorCarrito = document.getElementById("carrito-container");
 const totalCarrito = document.getElementById("total");
 const btnFinalizar = document.getElementById("btn-finalizar");
 
-productos.forEach((producto, id) => {
-    const productoDiv = document.createElement("div");
-    productoDiv.classList.add("producto"); 
-
-    const isOutOfStock = producto.stock === 0;
-
-    productoDiv.innerHTML = `
-        <h2>${producto.nombre}</h2>
-        <p>Precio: $${producto.precio}</p>
-        <p class="stock">Stock: <span id="stock-${producto.id}">${producto.stock}</span> disponibles</p>
-        <button class="btn-comprar" data-id="${producto.id}" ${isOutOfStock ? "disabled" : ""}>
-        ${isOutOfStock ? "Sin stock" : "Comprar"}
-        </button>
-    `;
-
-    contenedorProductos.appendChild(productoDiv);
-});
+//Traer productos con FETCH
+fetch('productos.json')
+  .then(response => response.json())
+  .then(data => {
+    productos = data;
+    mostrarProductos(productos); 
+    actualizarCarrito();
+  })
+  .catch(error => {
+    console.error('Error al cargar productos:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al cargar productos',
+      text: 'Ocurrió un problema al obtener los productos.',
+    });
+  });
 
 //Promesas
 document.querySelectorAll(".btn-comprar").forEach(boton => {
@@ -50,12 +49,18 @@ document.querySelectorAll(".btn-comprar").forEach(boton => {
         
         } catch (error) {
             Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error,
+            icon: 'error',
+            title: 'Error',
+            text: error,
             });
         }
     });
+});
+
+//Mostrar/Ocultar Carrito
+document.getElementById("btn-carrito").addEventListener("click", () => {
+  const carrito = document.getElementById("carrito");
+  carrito.style.display = (carrito.style.display === "none" || carrito.style.display === "") ? "block" : "none";
 });
 
 // Botón para vaciar carrito
@@ -85,8 +90,13 @@ function agregarAlCarrito(id) {
             boton.disabled = true;
             boton.textContent = "Sin stock";
         }
+
     } else {
-        alert("No hay más stock disponible");
+        Swal.fire({
+        icon: 'warning',
+        title: 'Sin stock',
+        text: 'No hay más stock disponible',
+        });
     }
 }
 
@@ -113,6 +123,8 @@ function quitarDelCarrito(id) {
 
 function actualizarCarrito() {
     contenedorCarrito.innerHTML = "";
+    contenedorCarrito.style.display = carrito.length > 0 ? "block" : "none";
+    
     let total = 0;
 
     carrito.forEach((item, i) => {
@@ -137,6 +149,7 @@ function actualizarCarrito() {
         boton.addEventListener("click", (event) => quitarDelCarrito(event.target.getAttribute("data-id")));
     });
     
+    //Botón +
     document.querySelectorAll(".btn-aumentar").forEach(boton => {
         boton.addEventListener("click", (event) => {
             const id = event.target.getAttribute("data-id");
@@ -144,10 +157,16 @@ function actualizarCarrito() {
             let productoOriginal = productos.find(p => p.id === item.id);
 
             if (productoOriginal.stock > 0) {
-                item.cantidad++;
-                productoOriginal.stock--;
-                document.getElementById(`stock-${productoOriginal.id}`).textContent = productoOriginal.stock;
-                actualizarCarrito();
+            item.cantidad++;
+            productoOriginal.stock--;
+            document.getElementById(`stock-${productoOriginal.id}`).textContent = productoOriginal.stock;
+            actualizarCarrito();
+            } else {
+                Swal.fire({
+                icon: 'warning',
+                title: 'Sin stock',
+                text: 'No hay más unidades disponibles de este producto.',
+                });
             }
         });
     });
@@ -165,8 +184,8 @@ btnFinalizar.addEventListener("click", () => {
         localStorage.removeItem("carrito");
         carrito = [];
         actualizarCarrito();
-    }
-});
+        }
+    });
 
 btnVaciar.addEventListener("click", () => {
     Swal.fire({

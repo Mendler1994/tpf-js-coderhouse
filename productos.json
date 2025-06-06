@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "nombre": "Auriculares Inalámbricos JBL",
+    "precio": 12000,
+    "stock": 5,
+    "img": "img/Auriculares Inalámbricos JBL.webp"
+  },
+  {
+    "id": 2,
+    "nombre": "Smartwatch Xiaomi Mi Band 7",
+    "precio": 80000,
+    "stock": 10,
+    "img": "img/Smartwatch Xiaomi Mi Band 7.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Notebook Lenovo 14''",
+    "precio": 500000,
+    "stock": 15,
+    "img": "img/Notebook Lenovo 14''.webp"
+  },
+  {
+    "id": 4,
+    "nombre": "Teclado Mecánico Redragon",
+    "precio": 25000,
+    "stock": 20,
+    "img": "img/Teclado Mecánico Redragon.webp"
+  },
+  {
+    "id": 5,
+    "nombre": "Mouse Gamer Logitech G203",
+    "precio": 24000,
+    "stock": 5,
+    "img": "img/Mouse Gamer Logitech G203.webp"
+  },
+  {
+    "id": 6,
+    "nombre": "Smart TV 50'' Samsung 4K",
+    "precio": 160000,
+    "stock": 10,
+    "img": "img/Smart TV 50'' Samsung 4K.jpg"
+  },
+  {
+    "id": 7,
+    "nombre": "Cafetera Nespresso",
+    "precio": 100000,
+    "stock": 15,
+    "img": "img/Cafetera Nespresso.webp"
+  },
+  {
+    "id": 8,
+    "nombre": "Licuadora Philips",
+    "precio": 50000,
+    "stock": 20,
+    "img": "img/Licuadora Philips.jpg"
+  },
+  {
+    "id": 9,
+    "nombre": "Tablet Samsung Galaxy Tab A7",
+    "precio": 130000,
+    "stock": 12,
+    "img": "img/Tablet Samsung Galaxy Tab A7.webp"
+  },
+  {
+    "id": 10,
+    "nombre": "Heladera con Freezer Whirlpool",
+    "precio": 700000,
+    "stock": 8,
+    "img": "img/Heladera con Freezer Whirlpool.jfif"
+  },
+  {
+    "id": 11,
+    "nombre": "Lavarropas Automático LG",
+    "precio": 650000,
+    "stock": 6,
+    "img": "img/Lavarropas Automático LG.jpg"
+  },
+  {
+    "id": 12,
+    "nombre": "Parlante Bluetooth Sony",
+    "precio": 45000,
+    "stock": 10,
+    "img": "img/Parlante Bluetooth Sony.webp"
+  }
+]
